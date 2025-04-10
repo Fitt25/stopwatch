@@ -1,0 +1,72 @@
+<h1 class="stopwatch">00:00</h1>
+<button class="start">Start</button>
+<button class="pause">Pause</button>
+<button class="stop">Stop</button>
+<script>
+    const timer = document.querySelector(".stopwatch")
+    const startButton = document.querySelector(".start")
+    const pauseButton = document.querySelector(".pause")
+    const stopButton = document.querySelector(".stop")
+    let running = false
+    let micro = 0, mili = 0, sec = 0
+    let isPaused = false
+
+    const stopwatch = () =>{  
+        if(!running || isPaused){
+            return
+        }
+        setTimeout(()=>{
+
+            micro += 1
+            if (micro > 9){
+                micro = 0
+                mili += 1
+            }
+            
+            if (mili > 9){
+                mili = 0
+                sec += 1
+            }
+            if (sec <= 9){
+                timer.innerText = `0${sec}:${mili}${micro}`
+            }else{
+                timer.innerText = `${sec}:${mili}${micro}`
+            }
+            
+            stopwatch()
+        },10)
+
+    }
+
+    startButton.onclick = () => {
+        
+        if(isPaused){
+            return stopwatch()
+        }
+        micro = 0
+        mili = 0
+        sec = 0
+        running = true
+        
+        stopwatch()
+        
+    }
+
+    pauseButton.onclick = () => {
+        if (isPaused){
+            isPaused = false
+            stopwatch()
+            pauseButton.innerText="Pause"
+            return
+        }
+        
+        isPaused = true
+        pauseButton.innerText="Unpause"
+        
+
+    }
+    stopButton.onclick = () => {
+        running = false
+        
+    }
+</script>
